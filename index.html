@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Domain to IP Finder</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+
+        .error {
+            margin-top: 15px;
+            color: red;
+            text-align: center;
+        }
+
+        .results {
+            margin-top: 25px;
+        }
+
+        .card {
+            background: #f4f6fb;
+            border-left: 6px solid #667eea;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .card p {
+            margin: 6px 0;
+            color: #333;
+        }
+
+        .card b {
+            color: #444;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🌐 Domain to IP Address Finder</h2>
+
+    <form method="POST">
+        <input type="text" name="domain" placeholder="Enter domain (e.g. google.com)" required>
+        <button type="submit">Find Details</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if results %}
+    <div class="results">
+        {% for item in results %}
+        <div class="card">
+            <p>
+  <b>IP Address:</b>
+  <a href="http://{{ item.ip }}" target="_blank" title="Open IP address">
+    {{ item.ip }}
+  </a>
+</p>
+<style>
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+
+            {% if item.location %}
+                <p><b>Country:</b> {{ item.location.country }}</p>
+                <p><b>Region:</b> {{ item.location.region }}</p>
+                <p><b>City:</b> {{ item.location.city }}</p>
+                <p><b>ISP:</b> {{ item.location.isp }}</p>
+            {% else %}
+                <p>Location details not available</p>
+            {% endif %}
+
+            <p><b>HTTP Port:</b> 80</p>
+            <p><b>HTTPS Port:</b> 443</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
